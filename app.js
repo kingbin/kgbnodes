@@ -7,7 +7,10 @@ var express = require('express')
   , mongo = require('mongodb')
   , monk = require('monk');
 
-var db = monk('localhost:27017/test');
+//var db = monk('localhost:27017/test');
+
+var conn = process.env.CUSTOMCONNSTR_MONGOLAB_URI
+var db = monk(conn);
 
 var app = express();
 
