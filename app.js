@@ -4,34 +4,35 @@
  */
 
 var express = require('express')
-  , routes = require('./routes')
-  , user = require('./routes/user')
-  , http = require('http')
-  , path = require('path');
+  , mongo = require('mongodb')
+  , monk = require('monk');
+
+var db = monk('localhost:27017/test');
 
 var app = express();
 
-// all environments
-app.set('port', process.env.PORT || 3000);
-app.set('views', __dirname + '/views');
-app.set('view engine', 'jade');
-app.use(express.favicon());
-app.use(express.logger('dev'));
-app.use(express.bodyParser());
-app.use(express.methodOverride());
-app.use(app.router);
-app.use(express.static(path.join(__dirname, 'public')));
-
-// development only
-if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
-}
-
-app.get('/', routes.index);
-app.get('/users', user.list);
-
-http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
+app.use(express.static(__dirname + '/public'));
+app.get('/',function(req,res){
+  db.driver.admin.listDatabases(function(e,dbs){
+      res.json(dbs);
+  });
 });
+app.get('/collections',function(req,res){
+  db.driver.collectionNames(function(e,names){
+    res.json(names);
+  })
+});
+app.get('/collections/:name',function(req,res){
+  var collection = db.get(req.params.name);
+  collection.find({},{limit:20},function(e,docs){
+    res.json(docs);
+  })
+});
+app.listen(3000)
+
+
+
+
+
 
 
