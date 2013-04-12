@@ -34,13 +34,4 @@ app.get('/collections/:name',function(req,res){
   })
 });
 //app.listen(3000)
-
-http.createServer(app).listen(app.get('port'), function(){
-  console.log('Our MongoDB client listening on port ' + app.get('port'));
-});
-
-
-
-
-
-
+app.listen(app.get('port'))
