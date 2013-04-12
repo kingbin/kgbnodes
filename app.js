@@ -7,14 +7,16 @@ var express = require('express')
   , mongo = require('mongodb')
   , monk = require('monk');
 
-//var db = monk('localhost:27017/test');
 
 var conn = process.env.CUSTOMCONNSTR_MONGOLAB_URI
+//var conn ='localhost:27017/test'
 var db = monk(conn);
+
 
 var app = express();
 
 app.use(express.static(__dirname + '/public'));
+app.set('port', process.env.PORT || 3000);
 app.get('/',function(req,res){
   db.driver.admin.listDatabases(function(e,dbs){
       res.json(dbs);
@@ -31,8 +33,11 @@ app.get('/collections/:name',function(req,res){
     res.json(docs);
   })
 });
-app.listen(3000)
+//app.listen(3000)
 
+http.createServer(app).listen(app.get('port'), function(){
+  console.log('Our MongoDB client listening on port ' + app.get('port'));
+});
 
 
 
