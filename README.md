@@ -1,4 +1,4 @@
-#kgbnodes
+#kgbnodes [![Build Status](https://travis-ci.org/kingbin/kgbnodes.png?branch=master)](http://travis-ci.org/kingbin/kgbnodes)
 
 * **[Azure Site Running mongodb backed kgbnodes](http://kgbnodes.azurewebsites.net/)**
 (gives an error on the mongodb cmd which is a good thing)
